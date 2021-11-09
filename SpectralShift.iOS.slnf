@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "SpectralShift.sln",
+    "projects": [
+      "SpectralShift.Game\\SpectralShift.Game.csproj",
+      "SpectralShift.Resources\\SpectralShift.Resources.csproj",
+      "SpectralShift.iOS\\SpectralShift.iOS.csproj"
+    ]
+  }
+}
