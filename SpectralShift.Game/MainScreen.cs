@@ -1,45 +1,39 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
-using osuTK.Graphics;
+using osu.Game.Configuration;
+using osu.Game.Graphics;
+using SpectralShift.Game.Edit;
 
 namespace SpectralShift.Game
 {
     public class MainScreen : Screen
     {
-        private Obstacle o;
-        private Container<SelectionBlueprint<Obstacle>> container;
+        [Cached]
+        protected readonly OsuColour OsuColour = new OsuColour();
+
+        [Cached]
+        protected readonly SessionStatics Statistics = new SessionStatics();
+
+        private readonly ObstacleContainer container = new ObstacleContainer();
+
+        private ObstacleEditor editor;
 
         [BackgroundDependencyLoader]
         private void load()
         {
-            container = new Container<SelectionBlueprint<Obstacle>>();
-            o = new Obstacle();
-            container.Add(new SelectionBlueprint<Obstacle>(o));
+            editor = new ObstacleEditor(container);
 
             InternalChildren = new Drawable[]
             {
                 new Box
                 {
-                    Colour = Color4.Violet,
+                    Colour = OsuColour.Gray2,
                     RelativeSizeAxes = Axes.Both,
                 },
                 container,
-                new SpriteText
-                {
-                    Y = 20,
-                    Text = "Main Screenu",
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    Font = FontUsage.Default.With(size: 40)
-                },
-                new SpinningBox
-                {
-                    Anchor = Anchor.Centre,
-                }
+                editor,
             };
         }
     }

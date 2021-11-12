@@ -10,12 +10,12 @@ namespace SpectralShift.Game
 {
     public class Obstacle : CompositeDrawable
     {
-        private Container box;
-
         [BackgroundDependencyLoader]
         private void load(TextureStore textures)
         {
-            InternalChild = box = new Container
+            AutoSizeAxes = Axes.Both;
+
+            InternalChild = new Container
             {
                 AutoSizeAxes = Axes.Both,
                 Anchor = Anchor.Centre,

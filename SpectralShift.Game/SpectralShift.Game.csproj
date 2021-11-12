@@ -6,6 +6,7 @@
     <ProjectReference Include="..\SpectralShift.Resources\SpectralShift.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.1029.0" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.1111.0" />
+    <PackageReference Include="ppy.osu.Game" Version="2021.1111.0" />
   </ItemGroup>
 </Project>
