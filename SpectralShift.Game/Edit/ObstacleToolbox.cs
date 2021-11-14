@@ -58,7 +58,11 @@ namespace SpectralShift.Game.Edit
                 Spacing = new Vector2(20)
             };
 
-            var obstacleTypes = new[] { typeof(Obstacle) };
+            var obstacleTypes = new[]
+            {
+                typeof(RectangleObstacle),
+                typeof(CircleObstacle),
+            };
 
             foreach (var type in obstacleTypes)
             {

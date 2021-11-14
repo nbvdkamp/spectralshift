@@ -1,43 +1,30 @@
-using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
-using osuTK.Graphics;
+using osuTK;
 
 namespace SpectralShift.Game
 {
-    public class Obstacle : CompositeDrawable
+    public abstract class Obstacle : CompositeDrawable
     {
-        [BackgroundDependencyLoader]
-        private void load(TextureStore textures)
-        {
-            AutoSizeAxes = Axes.Both;
+        protected Drawable Shape;
 
-            InternalChild = new Container
+        private Material material;
+
+        public Material Material
+        {
+            get => material;
+            set
             {
-                AutoSizeAxes = Axes.Both,
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                Children = new Drawable[]
-                {
-                    new Box
-                    {
-                        RelativeSizeAxes = Axes.Both,
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Colour = Color4.Aqua,
-                    },
-                    new SpriteText
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Text = "Test123",
-                        Font = FontUsage.Default.With(size: 40)
-                    },
-                }
-            };
+                material = value;
+
+                Shape.Colour = material.GetColor();
+            }
+        }
+
+        public void Setup()
+        {
+            Shape.Size = new Vector2(50, 50);
+            Material = Material.Diffuse;
         }
     }
 }

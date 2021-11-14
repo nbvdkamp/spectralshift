@@ -182,41 +182,24 @@ namespace SpectralShift.Game.Edit
 
         protected override IEnumerable<MenuItem> GetContextMenuItemsForSelection(IEnumerable<SelectionBlueprint<Obstacle>> selection)
         {
-            // var closestItem = new TernaryStateRadioMenuItem("Closest", MenuItemType.Standard, _ => applyClosestAnchors())
-            // {
-            //     State = { Value = GetStateFromSelection(selection, c => false) }
-            // };
-
-            // yield return new OsuMenuItem("Anchor")
-            // {
-            //     Items = createAnchorItems((d, a) => d.UsesFixedAnchor && ((Drawable)d).Anchor == a, applyFixedAnchors)
-            //             .Prepend(closestItem)
-            //             .ToArray()
-            // };
-
-            yield return new OsuMenuItem("Origin")
+            yield return new OsuMenuItem("Material")
             {
-                Items = createAnchorItems((d, o) => ((Drawable)d).Origin == o, applyOrigins).ToArray()
+                Items = createMaterialItems((d, m) => d.Material == m, applyMaterials).ToArray()
             };
 
             foreach (var item in base.GetContextMenuItemsForSelection(selection))
                 yield return item;
 
-            IEnumerable<TernaryStateMenuItem> createAnchorItems(Func<Obstacle, Anchor, bool> checkFunction, Action<Anchor> applyFunction)
+            IEnumerable<TernaryStateMenuItem> createMaterialItems(Func<Obstacle, Material, bool> checkFunction, Action<Material> applyFunction)
             {
-                var displayableAnchors = new[]
+                var displayableMaterials = new[]
                 {
-                    Anchor.TopLeft,
-                    Anchor.TopCentre,
-                    Anchor.TopRight,
-                    Anchor.CentreLeft,
-                    Anchor.Centre,
-                    Anchor.CentreRight,
-                    Anchor.BottomLeft,
-                    Anchor.BottomCentre,
-                    Anchor.BottomRight,
+                    Material.Diffuse,
+                    Material.Reflective,
+                    Material.Refractive
                 };
-                return displayableAnchors.Select(a =>
+
+                return displayableMaterials.Select(a =>
                 {
                     return new TernaryStateRadioMenuItem(a.ToString(), MenuItemType.Standard, _ => applyFunction(a))
                     {
@@ -232,20 +215,10 @@ namespace SpectralShift.Game.Edit
                 drawable.Parent.ToLocalSpace(screenSpacePosition) - drawable.AnchorPosition;
         }
 
-        private void applyOrigins(Anchor origin)
+        private void applyMaterials(Material material)
         {
             foreach (var item in SelectedItems)
-            {
-                var drawable = (Drawable)item;
-
-                if (origin == drawable.Origin) continue;
-
-                var previousOrigin = drawable.OriginPosition;
-                drawable.Origin = origin;
-                drawable.Position += drawable.OriginPosition - previousOrigin;
-
-                applyClosestAnchor(drawable);
-            }
+                item.Material = material;
         }
 
         /// <summary>
@@ -254,24 +227,6 @@ namespace SpectralShift.Game.Edit
         /// <returns></returns>
         private Quad getSelectionQuad() =>
             GetSurroundingQuad(SelectedBlueprints.SelectMany(b => b.Item.ScreenSpaceDrawQuad.GetVertices().ToArray()));
-
-        private void applyFixedAnchors(Anchor anchor)
-        {
-            foreach (var item in SelectedItems)
-            {
-                var drawable = (Drawable)item;
-
-                applyAnchor(drawable, anchor);
-            }
-        }
-
-        private void applyClosestAnchors()
-        {
-            foreach (var item in SelectedItems)
-            {
-                applyClosestAnchor((Drawable)item);
-            }
-        }
 
         private static Anchor getClosestAnchor(Drawable drawable)
         {
