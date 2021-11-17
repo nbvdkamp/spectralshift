@@ -53,18 +53,16 @@ namespace SpectralShift.Game
             foreach (var path in paths)
                 path.ClearVertices();
 
-            int requiredPaths = 4;
-
-            while (paths.Count < requiredPaths)
-                addPath();
-
             Vector2 cameraPos = new Vector2(500, 500);
             Vector2 cameraDir = Vector2.One.Normalized();
             Ray ray = new Ray(cameraPos, cameraDir);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 IntersectionResult? result = findNearestIntersection(ray);
+
+                if (paths.Count - 1 < i)
+                    addPath();
 
                 paths[i].AddVertex(ray.Origin);
 
