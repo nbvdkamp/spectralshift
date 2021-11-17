@@ -37,8 +37,10 @@ namespace SpectralShift.Game
             Vector2 u2 = u - u1;
             float centerDistance = u2.Length;
 
-            // Center is behind the ray and the origin is not in the circle
-            if (uDotDir < 0 && u.Length > radius)
+            bool originInCircle = u.Length < radius;
+            bool centerBehindRay = uDotDir < 0;
+
+            if (centerBehindRay && !originInCircle)
                 return null;
 
             if (centerDistance > radius)
@@ -55,7 +57,10 @@ namespace SpectralShift.Game
             return new IntersectionResult
             {
                 Position = position,
-                Normal = (center - position).Normalized(),
+                Normal = (position - center).Normalized(),
+                InsideShape = originInCircle,
+                Material = Material,
+                IndexOfRefraction = IndexOfRefraction,
             };
         }
     }

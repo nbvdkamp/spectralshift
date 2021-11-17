@@ -8,6 +8,9 @@ namespace SpectralShift.Game
     {
         public Vector2 Position;
         public Vector2 Normal;
+        public bool InsideShape;
+        public Material Material;
+        public float IndexOfRefraction;
     }
 
     public abstract class Obstacle : CompositeDrawable
@@ -27,10 +30,13 @@ namespace SpectralShift.Game
             }
         }
 
+        public float IndexOfRefraction { get; set; }
+
         public void Setup()
         {
             Shape.Size = new Vector2(50, 50);
             Material = Material.Diffuse;
+            IndexOfRefraction = 1.2f;
         }
 
         public abstract IntersectionResult? Intersects(Ray ray);
