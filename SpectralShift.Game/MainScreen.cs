@@ -56,12 +56,7 @@ namespace SpectralShift.Game
             int requiredPaths = 4;
 
             while (paths.Count < requiredPaths)
-            {
-                Path path = new SmoothPath();
-                path.PathRadius = 3;
-                paths.Add(path);
-                rayContainer.Add(path);
-            }
+                addPath();
 
             Vector2 cameraPos = new Vector2(500, 500);
             Vector2 cameraDir = Vector2.One.Normalized();
@@ -124,6 +119,14 @@ namespace SpectralShift.Game
                 return Vector2.Zero;
 
             return eta * incident - (eta * iDotN + (float)Math.Sqrt(k)) * normal;
+        }
+
+        private void addPath()
+        {
+            Path path = new SmoothPath();
+            path.PathRadius = 3;
+            paths.Add(path);
+            rayContainer.Add(path);
         }
     }
 }
