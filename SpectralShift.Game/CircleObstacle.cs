@@ -31,7 +31,13 @@ namespace SpectralShift.Game
             float radius = Scale.Y * Width / 2;
 
             Vector2 u = center - ray.Origin;
-            Vector2 u1 = Vector2.Dot(u, ray.Direction) * ray.Direction;
+            float uDotDir = Vector2.Dot(u, ray.Direction);
+
+            // Behind the ray
+            if (uDotDir < 0)
+                return null;
+
+            Vector2 u1 = uDotDir * ray.Direction;
             Vector2 u2 = u - u1;
             float centerDistance = u2.Length;
 
