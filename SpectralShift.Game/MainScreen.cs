@@ -69,20 +69,7 @@ namespace SpectralShift.Game
 
             for (int i = 0; i < 4; i++)
             {
-                float distance = float.MaxValue;
-                IntersectionResult? result = null;
-
-                foreach (Obstacle obstacle in obstacleContainer.Components)
-                {
-                    var intersection = obstacle.Intersects(ray);
-                    float d;
-
-                    if (intersection.HasValue && (d = (ray.Origin - intersection.Value.Position).Length) < distance)
-                    {
-                        distance = d;
-                        result = intersection.Value;
-                    }
-                }
+                IntersectionResult? result = findNearestIntersection(ray);
 
                 paths[i].AddVertex(ray.Origin);
 
@@ -106,6 +93,26 @@ namespace SpectralShift.Game
                     break;
                 }
             }
+        }
+
+        private IntersectionResult? findNearestIntersection(Ray ray)
+        {
+            float distance = float.MaxValue;
+            IntersectionResult? result = null;
+
+            foreach (Obstacle obstacle in obstacleContainer.Components)
+            {
+                var intersection = obstacle.Intersects(ray);
+                float d;
+
+                if (intersection.HasValue && (d = (ray.Origin - intersection.Value.Position).Length) < distance)
+                {
+                    distance = d;
+                    result = intersection.Value;
+                }
+            }
+
+            return result;
         }
 
         private Vector2 refract(Vector2 incident, Vector2 normal, float eta)
