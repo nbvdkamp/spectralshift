@@ -21,5 +21,10 @@ namespace SpectralShift.Game
 
             Setup();
         }
+
+        public override IntersectionResult? Intersects(Ray ray)
+        {
+            return null;
+        }
     }
 }
