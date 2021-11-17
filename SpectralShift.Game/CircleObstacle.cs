@@ -33,19 +33,24 @@ namespace SpectralShift.Game
             Vector2 u = center - ray.Origin;
             float uDotDir = Vector2.Dot(u, ray.Direction);
 
-            // Behind the ray
-            if (uDotDir < 0)
-                return null;
-
             Vector2 u1 = uDotDir * ray.Direction;
             Vector2 u2 = u - u1;
             float centerDistance = u2.Length;
+
+            // Center is behind the ray and the origin is not in the circle
+            if (uDotDir < 0 && u.Length > radius)
+                return null;
 
             if (centerDistance > radius)
                 return null;
 
             float m = (float)Math.Sqrt(radius * radius - centerDistance * centerDistance);
-            Vector2 position = ray.Origin + u1 - m * ray.Direction;
+            Vector2 position;
+
+            if (m < u1.Length)
+                position = ray.Origin + u1 - m * ray.Direction;
+            else
+                position = ray.Origin + u1 + m * ray.Direction;
 
             return new IntersectionResult
             {
