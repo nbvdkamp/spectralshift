@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -71,13 +70,7 @@ namespace SpectralShift.Game
 
                 if (result.HasValue)
                 {
-                    Vector2 normal = (result.Value.InsideShape ? -1 : 1) * result.Value.Normal;
-                    float iorRatio = (result.Value.InsideShape ? 1 / result.Value.IndexOfRefraction : result.Value.IndexOfRefraction);
-
-                    // Nudge new position slightly away from the circle to avoid immediate intersection
-                    ray.Origin = result.Value.Position - 0.01f * normal;
-                    ray.Direction = refract(ray.Direction, normal, iorRatio);
-
+                    ray = result.Value.RefractedRay(ray.Direction, 100);
                     paths[i].AddVertex(result.Value.Position);
                 }
                 else
@@ -106,17 +99,6 @@ namespace SpectralShift.Game
             }
 
             return result;
-        }
-
-        private Vector2 refract(Vector2 incident, Vector2 normal, float eta)
-        {
-            float iDotN = Vector2.Dot(incident, normal);
-            float k = 1.0f - eta * eta * (1.0f - iDotN * iDotN);
-
-            if (k < 0)
-                return Vector2.Zero;
-
-            return eta * incident - (eta * iDotN + (float)Math.Sqrt(k)) * normal;
         }
 
         private void addPath()

@@ -11,6 +11,18 @@ namespace SpectralShift.Game
         public bool InsideShape;
         public Material Material;
         public float IndexOfRefraction;
+
+        public Ray RefractedRay(Vector2 incident, float wavelength)
+        {
+            Vector2 normal = (InsideShape ? -1 : 1) * Normal;
+            float iorRatio = (InsideShape ? 1 / IndexOfRefraction : IndexOfRefraction);
+
+            // Nudge new position slightly away from the circle to avoid immediate intersection
+            Vector2 origin = Position - 0.01f * normal;
+            Vector2 direction = Util.Refract(incident, normal, iorRatio);
+
+            return new Ray(origin, direction);
+        }
     }
 
     public abstract class Obstacle : CompositeDrawable
