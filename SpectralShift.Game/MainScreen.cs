@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Lines;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Screens;
 using osu.Game.Configuration;
@@ -10,6 +9,7 @@ using osu.Game.Graphics;
 using osuTK;
 using osuTK.Graphics;
 using SpectralShift.Game.Edit;
+using SpectralShift.Game.Graphics;
 
 namespace SpectralShift.Game
 {
@@ -117,7 +117,7 @@ namespace SpectralShift.Game
 
         private void addPath()
         {
-            Path path = new SmoothPath();
+            Path path = new Path();
             path.PathRadius = 3;
             paths.Add(path);
             rayContainer.Add(path);
