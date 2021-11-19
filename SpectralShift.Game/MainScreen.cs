@@ -70,7 +70,21 @@ namespace SpectralShift.Game
 
                 if (result.HasValue)
                 {
-                    ray = result.Value.RefractedRay(ray.Direction, 100);
+                    switch (result.Value.Material)
+                    {
+                        case Material.Diffuse:
+                            ray = result.Value.ReflectedRay(ray.Direction);
+                            break;
+
+                        case Material.Reflective:
+                            ray = result.Value.ReflectedRay(ray.Direction);
+                            break;
+
+                        case Material.Refractive:
+                            ray = result.Value.RefractedRay(ray.Direction, 100);
+                            break;
+                    }
+
                     paths[i].AddVertex(result.Value.Position);
                 }
                 else

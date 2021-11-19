@@ -23,6 +23,17 @@ namespace SpectralShift.Game
 
             return new Ray(origin, direction);
         }
+
+        public Ray ReflectedRay(Vector2 incident)
+        {
+            Vector2 normal = (InsideShape ? -1 : 1) * Normal;
+
+            // Nudge new position slightly away from the circle to avoid immediate intersection
+            Vector2 origin = Position + 0.1f * normal;
+            Vector2 direction = Util.Reflect(incident, normal);
+
+            return new Ray(origin, direction);
+        }
     }
 
     public abstract class Obstacle : CompositeDrawable

@@ -47,12 +47,12 @@ namespace SpectralShift.Game
                 return null;
 
             float m = (float)Math.Sqrt(radius * radius - centerDistance * centerDistance);
-            Vector2 position;
+            Vector2 position = ray.Origin + u1;
 
             if (m < u1.Length)
-                position = ray.Origin + u1 - m * ray.Direction;
+                position -= m * ray.Direction;
             else
-                position = ray.Origin + u1 + m * ray.Direction;
+                position += m * ray.Direction;
 
             return new IntersectionResult
             {

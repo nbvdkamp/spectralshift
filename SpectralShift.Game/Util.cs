@@ -15,5 +15,10 @@ namespace SpectralShift.Game
 
             return eta * incident - (eta * iDotN + (float)Math.Sqrt(k)) * normal;
         }
+
+        public static Vector2 Reflect(Vector2 incident, Vector2 normal)
+        {
+            return incident - 2 * Vector2.Dot(incident, normal) * normal;
+        }
     }
 }
