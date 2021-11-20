@@ -29,12 +29,12 @@ namespace SpectralShift.Game
             float angle = (float)Math.PI / 180f * Rotation;
             Matrix2 rotation = Matrix2.CreateRotation(angle);
             Matrix2 inverseRotation = Matrix2.CreateRotation(-angle);
-            Ray rotatedRay = new Ray(Util.Multiply(rotation, ray.Origin - Position) + Position, Util.Multiply(rotation, ray.Direction));
+            Ray rotatedRay = new Ray(Util.Multiply(rotation, ray.Origin - Position), Util.Multiply(rotation, ray.Direction));
 
-            // Axis aligned box ray intersection
+            // Axis aligned box ray intersection centered at the origin
             Vector2 corner = new Vector2(Scale.X * Width / 2, Scale.Y * Height / 2);
-            Vector2 min = Position - corner;
-            Vector2 max = Position + corner;
+            Vector2 min = -corner;
+            Vector2 max = corner;
             Vector2 inverseDirection = new Vector2(1 / rotatedRay.Direction.X, 1 / rotatedRay.Direction.Y);
 
             Vector2 t0 = Util.ElementwiseMultiply(min - rotatedRay.Origin, inverseDirection);
@@ -47,7 +47,8 @@ namespace SpectralShift.Game
             if (behindRay || Util.MaxElement(tmin) > Util.MinElement(tmax))
                 return null;
 
-            bool originInRect = false;
+            bool originInRect = Math.Abs(rotatedRay.Origin.X) < Math.Abs(corner.X) &&
+                                Math.Abs(rotatedRay.Origin.Y) < Math.Abs(corner.Y);
             Vector2 normal;
 
             if (Util.MaxElement(tmin) == tmin.X)
