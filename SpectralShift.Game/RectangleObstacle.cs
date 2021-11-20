@@ -1,6 +1,8 @@
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
+using osuTK;
 
 namespace SpectralShift.Game
 {
@@ -24,7 +26,47 @@ namespace SpectralShift.Game
 
         public override IntersectionResult? Intersects(Ray ray)
         {
-            return null;
+            float angle = (float)Math.PI / 180f * Rotation;
+            Matrix2 rotation = Matrix2.CreateRotation(angle);
+            Matrix2 inverseRotation = Matrix2.CreateRotation(-angle);
+            Ray rotatedRay = new Ray(Util.Multiply(rotation, ray.Origin - Position) + Position, Util.Multiply(rotation, ray.Direction));
+
+            // Axis aligned box ray intersection
+            Vector2 corner = new Vector2(Scale.X * Width / 2, Scale.Y * Height / 2);
+            Vector2 min = Position - corner;
+            Vector2 max = Position + corner;
+            Vector2 inverseDirection = new Vector2(1 / rotatedRay.Direction.X, 1 / rotatedRay.Direction.Y);
+
+            Vector2 t0 = Util.ElementwiseMultiply(min - rotatedRay.Origin, inverseDirection);
+            Vector2 t1 = Util.ElementwiseMultiply(max - rotatedRay.Origin, inverseDirection);
+            Vector2 tmin = Util.ElementwiseMin(t0, t1);
+            Vector2 tmax = Util.ElementwiseMax(t0, t1);
+
+            bool behindRay = Util.MinElement(tmax) < 0;
+
+            if (behindRay || Util.MaxElement(tmin) > Util.MinElement(tmax))
+                return null;
+
+            bool originInRect = false;
+            Vector2 normal;
+
+            if (Util.MaxElement(tmin) == tmin.X)
+                normal = Vector2.UnitX * -Math.Sign(rotatedRay.Direction.X);
+            else
+                normal = Vector2.UnitY * -Math.Sign(rotatedRay.Direction.Y);
+
+            normal = Util.Multiply(inverseRotation, normal);
+
+            Vector2 position = ray.Origin + Util.MaxElement(tmin) * ray.Direction;
+
+            return new IntersectionResult
+            {
+                Position = position,
+                Normal = normal,
+                InsideShape = originInRect,
+                Material = Material,
+                IndexOfRefraction = IndexOfRefraction,
+            };
         }
     }
 }
