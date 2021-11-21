@@ -49,16 +49,32 @@ namespace SpectralShift.Game
 
             bool originInRect = Math.Abs(rotatedRay.Origin.X) < Math.Abs(corner.X) &&
                                 Math.Abs(rotatedRay.Origin.Y) < Math.Abs(corner.Y);
+            // == Util.MaxElement(tmin) >= 0
+
+            float distance;
+            bool hitOnSide;
+
+            if (!originInRect)
+            {
+                distance = Util.MaxElement(tmin);
+                hitOnSide = Util.MaxElement(tmin) == tmin.X;
+            }
+            else
+            {
+                distance = Util.MinElement(tmax);
+                hitOnSide = Util.MaxElement(tmin) == tmin.Y;
+            }
+
             Vector2 normal;
 
-            if (Util.MaxElement(tmin) == tmin.X)
-                normal = Vector2.UnitX * -Math.Sign(rotatedRay.Direction.X);
+            if (hitOnSide)
+                normal = Vector2.UnitX * (originInRect ? 1 : -1) * Math.Sign(rotatedRay.Direction.X);
             else
-                normal = Vector2.UnitY * -Math.Sign(rotatedRay.Direction.Y);
+                normal = Vector2.UnitY * (originInRect ? 1 : -1) * Math.Sign(rotatedRay.Direction.Y);
 
             normal = Util.Multiply(inverseRotation, normal);
 
-            Vector2 position = ray.Origin + Util.MaxElement(tmin) * ray.Direction;
+            Vector2 position = ray.Origin + distance * ray.Direction;
 
             return new IntersectionResult
             {
