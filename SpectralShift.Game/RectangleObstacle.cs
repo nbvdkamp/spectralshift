@@ -31,14 +31,40 @@ namespace SpectralShift.Game
             Matrix2 inverseRotation = Matrix2.CreateRotation(-angle);
             Ray rotatedRay = new Ray(Util.Multiply(rotation, ray.Origin - Position), Util.Multiply(rotation, ray.Direction));
 
-            // Axis aligned box ray intersection centered at the origin
             Vector2 corner = new Vector2(Scale.X * Width / 2, Scale.Y * Height / 2);
+            AABBIntersectionResult? result = IntersectAabbAtOrigin(rotatedRay, corner);
+
+            if (result.HasValue)
+            {
+                return new IntersectionResult
+                {
+                    Position = ray.Origin + result.Value.DistanceFromOrigin * ray.Direction,
+                    Normal = Util.Multiply(inverseRotation, result.Value.Normal),
+                    InsideShape = result.Value.InsideShape,
+                    Material = Material,
+                    IndexOfRefraction = IndexOfRefraction,
+                };
+            }
+
+            return null;
+        }
+
+        public struct AABBIntersectionResult
+        {
+            public bool InsideShape;
+            public Vector2 Normal;
+            public float DistanceFromOrigin;
+        }
+
+        public static AABBIntersectionResult? IntersectAabbAtOrigin(Ray ray, Vector2 corner)
+        {
+            // Axis aligned box ray intersection centered at the origin
             Vector2 min = -corner;
             Vector2 max = corner;
-            Vector2 inverseDirection = new Vector2(1 / rotatedRay.Direction.X, 1 / rotatedRay.Direction.Y);
+            Vector2 inverseDirection = new Vector2(1 / ray.Direction.X, 1 / ray.Direction.Y);
 
-            Vector2 t0 = Util.ElementwiseMultiply(min - rotatedRay.Origin, inverseDirection);
-            Vector2 t1 = Util.ElementwiseMultiply(max - rotatedRay.Origin, inverseDirection);
+            Vector2 t0 = Util.ElementwiseMultiply(min - ray.Origin, inverseDirection);
+            Vector2 t1 = Util.ElementwiseMultiply(max - ray.Origin, inverseDirection);
             Vector2 tmin = Util.ElementwiseMin(t0, t1);
             Vector2 tmax = Util.ElementwiseMax(t0, t1);
 
@@ -47,8 +73,8 @@ namespace SpectralShift.Game
             if (behindRay || Util.MaxElement(tmin) > Util.MinElement(tmax))
                 return null;
 
-            bool originInRect = Math.Abs(rotatedRay.Origin.X) < Math.Abs(corner.X) &&
-                                Math.Abs(rotatedRay.Origin.Y) < Math.Abs(corner.Y);
+            bool originInRect = Math.Abs(ray.Origin.X) < Math.Abs(corner.X) &&
+                                Math.Abs(ray.Origin.Y) < Math.Abs(corner.Y);
             // == Util.MaxElement(tmin) >= 0
 
             float distance;
@@ -68,21 +94,15 @@ namespace SpectralShift.Game
             Vector2 normal;
 
             if (hitOnSide)
-                normal = Vector2.UnitX * (originInRect ? 1 : -1) * Math.Sign(rotatedRay.Direction.X);
+                normal = Vector2.UnitX * (originInRect ? 1 : -1) * Math.Sign(ray.Direction.X);
             else
-                normal = Vector2.UnitY * (originInRect ? 1 : -1) * Math.Sign(rotatedRay.Direction.Y);
+                normal = Vector2.UnitY * (originInRect ? 1 : -1) * Math.Sign(ray.Direction.Y);
 
-            normal = Util.Multiply(inverseRotation, normal);
-
-            Vector2 position = ray.Origin + distance * ray.Direction;
-
-            return new IntersectionResult
+            return new AABBIntersectionResult
             {
-                Position = position,
                 Normal = normal,
                 InsideShape = originInRect,
-                Material = Material,
-                IndexOfRefraction = IndexOfRefraction,
+                DistanceFromOrigin = distance,
             };
         }
     }
