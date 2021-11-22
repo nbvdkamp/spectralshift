@@ -1,4 +1,4 @@
-// Adapted from https://github.com/ppy/osu/blob/master/osu.Game/Screens/Edit/Compose/Components/SelectionHandler.cs
+// Adapted from https://github.com/ppy/osu/blob/master/osu.Game/Skinning/Editor/SkinSelectionHandler.cs
 
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
