@@ -169,11 +169,14 @@ namespace SpectralShift.Game.Edit
         {
             base.OnSelectionChanged();
 
-            SelectionBox.CanRotate = true;
+            bool multipleSelected = SelectedBlueprints.Count > 1;
+            bool cannotRotate = SelectedBlueprints.Count == 1 && SelectedBlueprints[0].Item is CircleObstacle;
+
+            SelectionBox.CanRotate = !cannotRotate;
             SelectionBox.CanScaleX = true;
             SelectionBox.CanScaleY = true;
-            SelectionBox.CanFlipX = true;
-            SelectionBox.CanFlipY = true;
+            SelectionBox.CanFlipX = multipleSelected;
+            SelectionBox.CanFlipY = multipleSelected;
             SelectionBox.CanReverse = false;
         }
 

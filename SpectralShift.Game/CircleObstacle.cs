@@ -28,7 +28,7 @@ namespace SpectralShift.Game
         {
             // https://www.bluebill.net/circle_ray_intersection.html
             Vector2 center = Position;
-            float radius = Scale.Y * Width / 2;
+            float radius = Math.Abs(Scale.Y) * Width / 2;
 
             Vector2 u = center - ray.Origin;
             float uDotDir = Vector2.Dot(u, ray.Direction);
