@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using osuTK;
 
@@ -25,6 +26,20 @@ namespace SpectralShift.Game.Tests
         {
             Ray ray = new Ray(Vector2.Zero, Vector2.UnitX);
             assertHit(ray, Vector2.One, Vector2.UnitX, true, 1);
+        }
+
+        [Test]
+        public void HitInsideDown()
+        {
+            Ray ray = new Ray(Vector2.Zero, -Vector2.UnitY);
+            assertHit(ray, Vector2.One, -Vector2.UnitY, true, 1);
+        }
+
+        [Test]
+        public void HitInsideDownRight()
+        {
+            Ray ray = new Ray(Vector2.Zero, new Vector2(1, -2).Normalized());
+            assertHit(ray, Vector2.One, -Vector2.UnitY, true, (float)Math.Sqrt(5f / 4));
         }
 
         [Test]

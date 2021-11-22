@@ -88,7 +88,7 @@ namespace SpectralShift.Game
             else
             {
                 distance = Util.MinElement(tmax);
-                hitOnSide = Util.MaxElement(tmin) == tmin.Y;
+                hitOnSide = Util.MaxElement(tmin) == tmin.X;
             }
 
             Vector2 normal;
