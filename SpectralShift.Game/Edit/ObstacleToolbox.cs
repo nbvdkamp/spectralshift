@@ -22,7 +22,7 @@ using osuTK.Graphics;
 
 namespace SpectralShift.Game.Edit
 {
-    public class ObstacleToolbox : ScrollingToolboxGroup
+    public class ObstacleToolbox : ToolboxGroup
     {
         public Action<Type> RequestPlacement;
 
@@ -38,8 +38,8 @@ namespace SpectralShift.Game.Edit
         [Cached(typeof(HealthProcessor))]
         private HealthProcessor healthProcessor = new DrainingHealthProcessor(0);
 
-        public ObstacleToolbox(float height)
-            : base("Obstacles", height)
+        public ObstacleToolbox()
+            : base("Obstacles")
         {
             RelativeSizeAxes = Axes.None;
             Width = 200;

@@ -54,26 +54,18 @@ namespace SpectralShift.Game.Edit
                         Origin = Anchor.TopCentre,
                         RelativeSizeAxes = Axes.X
                     },
-                    new GridContainer
+                    new Container
                     {
                         RelativeSizeAxes = Axes.Both,
-                        ColumnDimensions = new[]
+                        Children = new Drawable[]
                         {
-                            new Dimension(GridSizeMode.AutoSize),
-                            new Dimension()
-                        },
-                        Content = new[]
-                        {
-                            new Drawable[]
+                            new ObstacleBlueprintContainer(targetContainer),
+                            new ObstacleToolbox
                             {
-                                new ObstacleToolbox(700)
-                                {
-                                    Anchor = Anchor.CentreLeft,
-                                    Origin = Anchor.CentreLeft,
-                                    RequestPlacement = placeComponent
-                                },
-                                new ObstacleBlueprintContainer(targetContainer),
-                            }
+                                Anchor = Anchor.CentreLeft,
+                                Origin = Anchor.CentreLeft,
+                                RequestPlacement = placeComponent
+                            },
                         }
                     }
                 }
