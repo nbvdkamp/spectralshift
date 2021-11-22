@@ -6,7 +6,7 @@ using osuTK;
 
 namespace SpectralShift.Game
 {
-    public class RectangleObstacle : Obstacle
+    public class Rectangle : Obstacle
     {
         [BackgroundDependencyLoader]
         private void load()

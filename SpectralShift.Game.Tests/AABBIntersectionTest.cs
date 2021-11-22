@@ -65,7 +65,7 @@ namespace SpectralShift.Game.Tests
 
         private void assertHit(Ray ray, Vector2 corner, Vector2 expectedNormal, bool expectedInsideShape, float expectedDistance)
         {
-            var result = RectangleObstacle.IntersectAabbAtOrigin(ray, corner);
+            var result = Rectangle.IntersectAabbAtOrigin(ray, corner);
             Assert.NotNull(result);
             Assert.AreEqual(expectedNormal, result.Value.Normal);
             Assert.AreEqual(expectedInsideShape, result.Value.InsideShape);
@@ -74,7 +74,7 @@ namespace SpectralShift.Game.Tests
 
         private void assertMiss(Ray ray, Vector2 corner)
         {
-            var result = RectangleObstacle.IntersectAabbAtOrigin(ray, corner);
+            var result = Rectangle.IntersectAabbAtOrigin(ray, corner);
             Assert.IsNull(result);
         }
     }

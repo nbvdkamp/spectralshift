@@ -170,7 +170,7 @@ namespace SpectralShift.Game.Edit
             base.OnSelectionChanged();
 
             bool multipleSelected = SelectedBlueprints.Count > 1;
-            bool cannotRotate = SelectedBlueprints.Count == 1 && SelectedBlueprints[0].Item is CircleObstacle;
+            bool cannotRotate = SelectedBlueprints.Count == 1 && SelectedBlueprints[0].Item is Circle;
 
             SelectionBox.CanRotate = !cannotRotate;
             SelectionBox.CanScaleX = true;

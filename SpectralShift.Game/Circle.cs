@@ -1,12 +1,11 @@
 using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Shapes;
 using osuTK;
 
 namespace SpectralShift.Game
 {
-    public class CircleObstacle : Obstacle
+    public class Circle : Obstacle
     {
         [BackgroundDependencyLoader]
         private void load()
@@ -15,7 +14,7 @@ namespace SpectralShift.Game
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
 
-            InternalChild = Shape = new Circle
+            InternalChild = Shape = new osu.Framework.Graphics.Shapes.Circle
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

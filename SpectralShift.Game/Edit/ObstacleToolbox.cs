@@ -60,8 +60,8 @@ namespace SpectralShift.Game.Edit
 
             var obstacleTypes = new[]
             {
-                typeof(RectangleObstacle),
-                typeof(CircleObstacle),
+                typeof(Rectangle),
+                typeof(Circle),
             };
 
             foreach (var type in obstacleTypes)
