@@ -122,7 +122,19 @@ namespace SpectralShift.Game.Edit
                 );
 
                 updateDrawablePosition(drawableItem, newPositionInAdjusted);
-                drawableItem.Scale *= scaledDelta;
+
+                if (b.Item is Circle)
+                {
+                    // Prevent circles from stretching
+                    float min = Math.Min(scaledDelta.X, scaledDelta.Y);
+                    float max = Math.Max(scaledDelta.X, scaledDelta.Y);
+                    if (min < 1)
+                        drawableItem.Scale *= min;
+                    else
+                        drawableItem.Scale *= max;
+                }
+                else
+                    drawableItem.Scale *= scaledDelta;
             }
 
             return true;
