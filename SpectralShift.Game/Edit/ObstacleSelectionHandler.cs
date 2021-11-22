@@ -168,11 +168,10 @@ namespace SpectralShift.Game.Edit
         protected override void OnSelectionChanged()
         {
             base.OnSelectionChanged();
-
             bool multipleSelected = SelectedBlueprints.Count > 1;
-            bool cannotRotate = SelectedBlueprints.Count == 1 && SelectedBlueprints[0].Item is Circle;
+            bool onlyOneCircleSelected = SelectedBlueprints.Count == 1 && SelectedBlueprints[0].Item is Circle;
 
-            SelectionBox.CanRotate = !cannotRotate;
+            SelectionBox.CanRotate = !onlyOneCircleSelected;
             SelectionBox.CanScaleX = true;
             SelectionBox.CanScaleY = true;
             SelectionBox.CanFlipX = multipleSelected;
