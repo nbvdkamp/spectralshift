@@ -65,8 +65,8 @@ namespace SpectralShift.Game
 
             Vector2 t0 = Util.ElementwiseMultiply(min - ray.Origin, inverseDirection);
             Vector2 t1 = Util.ElementwiseMultiply(max - ray.Origin, inverseDirection);
-            Vector2 tmin = Util.ElementwiseMin(t0, t1);
-            Vector2 tmax = Util.ElementwiseMax(t0, t1);
+            Vector2 tmin = Vector2.ComponentMin(t0, t1);
+            Vector2 tmax = Vector2.ComponentMax(t0, t1);
 
             bool behindRay = Util.MinElement(tmax) < 0;
 
