@@ -59,7 +59,6 @@ namespace SpectralShift.Game
                 Normal = (position - center).Normalized(),
                 InsideShape = originInCircle,
                 Material = Material,
-                IndexOfRefraction = IndexOfRefraction,
             };
         }
     }

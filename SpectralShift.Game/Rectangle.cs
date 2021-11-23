@@ -42,7 +42,6 @@ namespace SpectralShift.Game
                     Normal = Util.Multiply(inverseRotation, result.Value.Normal),
                     InsideShape = result.Value.InsideShape,
                     Material = Material,
-                    IndexOfRefraction = IndexOfRefraction,
                 };
             }
 

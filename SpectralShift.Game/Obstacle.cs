@@ -10,12 +10,12 @@ namespace SpectralShift.Game
         public Vector2 Normal;
         public bool InsideShape;
         public Material Material;
-        public float IndexOfRefraction;
 
         public Ray RefractedRay(Vector2 incident, float wavelength)
         {
             Vector2 normal = (InsideShape ? -1 : 1) * Normal;
-            float iorRatio = (InsideShape ? 1 / IndexOfRefraction : IndexOfRefraction);
+            float ior = Util.Cauchy(1.5046f, 0.00420f, wavelength / 1000);
+            float iorRatio = (InsideShape ? ior : 1 / ior);
 
             // Nudge new position slightly away from the circle to avoid immediate intersection
             Vector2 origin = Position - 0.01f * normal;
@@ -53,13 +53,10 @@ namespace SpectralShift.Game
             }
         }
 
-        public float IndexOfRefraction { get; set; }
-
         public void Setup()
         {
             Shape.Size = new Vector2(50, 50);
             Material = Material.Diffuse;
-            IndexOfRefraction = 1.2f;
         }
 
         public abstract IntersectionResult? Intersects(Ray ray);

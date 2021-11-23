@@ -81,7 +81,7 @@ namespace SpectralShift.Game
                             break;
 
                         case Material.Refractive:
-                            ray = result.Value.RefractedRay(ray.Direction, 100);
+                            ray = result.Value.RefractedRay(ray.Direction, 400);
                             break;
                     }
 
