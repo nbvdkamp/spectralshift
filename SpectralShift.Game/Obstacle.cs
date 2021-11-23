@@ -17,9 +17,18 @@ namespace SpectralShift.Game
             float ior = Util.Cauchy(1.5046f, 0.00420f, wavelength / 1000);
             float iorRatio = (InsideShape ? ior : 1 / ior);
 
-            // Nudge new position slightly away from the circle to avoid immediate intersection
-            Vector2 origin = Position - 0.01f * normal;
+            Vector2 origin;
             Vector2 direction = Util.Refract(incident, normal, iorRatio);
+
+            if (direction == Vector2.Zero) //Total internal reflection
+            {
+                origin = Position + 0.01f * normal;
+                direction = Util.Reflect(incident, normal);
+            }
+            else
+            {
+                origin = Position - 0.01f * normal;
+            }
 
             return new Ray(origin, direction);
         }
