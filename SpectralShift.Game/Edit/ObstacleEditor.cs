@@ -88,6 +88,7 @@ namespace SpectralShift.Game.Edit
             component.Origin = Anchor.TopCentre;
             component.Anchor = Anchor.TopCentre;
             component.Position = targetContainer.DrawSize / 2;
+            component.Scale *= 2;
 
             targetContainer.Add(component);
 
