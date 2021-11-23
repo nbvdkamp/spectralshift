@@ -11,12 +11,10 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Input.Events;
-using osu.Framework.Utils;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Rulesets.Edit;
-using osu.Game.Rulesets.Scoring;
 using osuTK;
 using osuTK.Graphics;
 
@@ -27,16 +25,6 @@ namespace SpectralShift.Game.Edit
         public Action<Type> RequestPlacement;
 
         private const float component_display_scale = 0.8f;
-
-        [Cached]
-        private ScoreProcessor scoreProcessor = new ScoreProcessor
-        {
-            Combo = { Value = RNG.Next(1, 1000) },
-            TotalScore = { Value = RNG.Next(1000, 10000000) }
-        };
-
-        [Cached(typeof(HealthProcessor))]
-        private HealthProcessor healthProcessor = new DrainingHealthProcessor(0);
 
         public ObstacleToolbox()
             : base("Obstacles")
