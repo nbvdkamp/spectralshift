@@ -27,6 +27,8 @@ namespace SpectralShift.Game
 
         private readonly List<Path> paths = new List<Path>();
 
+        private Camera camera;
+
         private ObstacleEditor editor;
 
         [BackgroundDependencyLoader]
@@ -42,6 +44,11 @@ namespace SpectralShift.Game
                 obstacleContainer = new ObstacleContainer(),
                 rayContainer = new Container(),
                 editor = new ObstacleEditor(obstacleContainer),
+                camera = new Camera
+                {
+                    Position = new Vector2(100, 100),
+                    Colour = OsuColour.YellowDark,
+                },
             };
         }
 
@@ -52,11 +59,9 @@ namespace SpectralShift.Game
             foreach (var path in paths)
                 path.ClearVertices();
 
-            Vector2 cameraPos = new Vector2(500, 500);
-            Vector2 cameraDir = Vector2.One.Normalized();
             Ray[] rays =
             {
-                new Ray(cameraPos, cameraDir),
+                new Ray(camera.Position, camera.Direction),
                 new Ray(Vector2.Zero, Vector2.One),
             };
             bool[] raysActive = { true, false };
