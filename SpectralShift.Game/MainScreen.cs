@@ -68,7 +68,7 @@ namespace SpectralShift.Game
             bool split = false;
             int pathIndex = 0;
 
-            for (int depth = 0; depth < 4; depth++)
+            for (int depth = 0; depth < 10; depth++)
             {
                 for (int i = 0; i < (split ? 2 : 1); i++)
                 {
