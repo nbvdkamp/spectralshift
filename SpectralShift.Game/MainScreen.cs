@@ -104,6 +104,8 @@ namespace SpectralShift.Game
                                     raysActive[1] = true;
                                     rays[0] = result.Value.RefractedRay(rays[0].Direction, 300);
                                     rays[1] = result.Value.RefractedRay(rays[0].Direction, 600);
+                                    // Prevent second ray getting an extra bounce
+                                    i = 2;
                                 }
                                 else
                                 {
