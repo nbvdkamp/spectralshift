@@ -54,43 +54,74 @@ namespace SpectralShift.Game
 
             Vector2 cameraPos = new Vector2(500, 500);
             Vector2 cameraDir = Vector2.One.Normalized();
-            Ray ray = new Ray(cameraPos, cameraDir);
-
-            for (int i = 0; i < 8; i++)
+            Ray[] rays =
             {
-                IntersectionResult? result = findNearestIntersection(ray);
+                new Ray(cameraPos, cameraDir),
+                new Ray(Vector2.Zero, Vector2.One),
+            };
+            bool[] raysActive = { true, false };
+            bool split = false;
+            int pathIndex = 0;
 
-                if (paths.Count - 1 < i)
-                    addPath();
-
-                paths[i].AddVertex(ray.Origin);
-
-                if (i % 2 == 1)
-                    paths[i].Colour = Color4.Red;
-
-                if (result.HasValue)
+            for (int depth = 0; depth < 4; depth++)
+            {
+                for (int i = 0; i < (split ? 2 : 1); i++)
                 {
-                    switch (result.Value.Material)
+                    if (!(raysActive[0] || raysActive[1]))
+                        break;
+
+                    if (!raysActive[i])
+                        continue;
+
+                    IntersectionResult? result = findNearestIntersection(rays[i]);
+
+                    if (paths.Count - 1 < pathIndex)
+                        addPath();
+
+                    paths[pathIndex].AddVertex(rays[i].Origin);
+
+                    if (split)
+                        paths[pathIndex].Colour = (i == 0 ? Color4.Blue : Color4.Green);
+                    else
+                        paths[pathIndex].Colour = Color4.White;
+
+                    if (result.HasValue)
                     {
-                        case Material.Diffuse:
-                            ray = result.Value.ReflectedRay(ray.Direction);
-                            break;
+                        switch (result.Value.Material)
+                        {
+                            case Material.Diffuse:
+                                rays[i] = result.Value.ReflectedRay(rays[i].Direction);
+                                break;
 
-                        case Material.Reflective:
-                            ray = result.Value.ReflectedRay(ray.Direction);
-                            break;
+                            case Material.Reflective:
+                                rays[i] = result.Value.ReflectedRay(rays[i].Direction);
+                                break;
 
-                        case Material.Refractive:
-                            ray = result.Value.RefractedRay(ray.Direction, 400);
-                            break;
+                            case Material.Refractive:
+                                if (!split)
+                                {
+                                    split = true;
+                                    raysActive[1] = true;
+                                    rays[0] = result.Value.RefractedRay(rays[0].Direction, 300);
+                                    rays[1] = result.Value.RefractedRay(rays[0].Direction, 600);
+                                }
+                                else
+                                {
+                                    rays[i] = result.Value.RefractedRay(rays[i].Direction, (1 + i) * 300);
+                                }
+
+                                break;
+                        }
+
+                        paths[pathIndex].AddVertex(result.Value.Position);
+                    }
+                    else
+                    {
+                        paths[pathIndex].AddVertex(rays[i].Origin + rays[i].Direction * 10000);
+                        raysActive[i] = false;
                     }
 
-                    paths[i].AddVertex(result.Value.Position);
-                }
-                else
-                {
-                    paths[i].AddVertex(ray.Origin + ray.Direction * 10000);
-                    break;
+                    pathIndex++;
                 }
             }
         }
