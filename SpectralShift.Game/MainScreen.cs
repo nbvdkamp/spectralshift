@@ -7,7 +7,6 @@ using osu.Framework.Screens;
 using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osuTK;
-using osuTK.Graphics;
 using SpectralShift.Game.Edit;
 using SpectralShift.Game.Graphics;
 
@@ -38,7 +37,7 @@ namespace SpectralShift.Game
             {
                 new Box
                 {
-                    Colour = OsuColour.Gray2,
+                    Colour = OsuColour.Gray4,
                     RelativeSizeAxes = Axes.Both,
                 },
                 obstacleContainer = new ObstacleContainer(),
@@ -51,6 +50,10 @@ namespace SpectralShift.Game
                 },
             };
         }
+
+        private readonly Colour4 basePath = Colour4.FromHex("#4472C4");
+        private readonly Colour4 offsetPath = Colour4.FromHex("#FF0000");
+        private readonly Colour4 joinedPath = Colour4.FromHex("#993764");
 
         protected override void Update()
         {
@@ -86,9 +89,9 @@ namespace SpectralShift.Game
                     paths[pathIndex].AddVertex(rays[i].Origin);
 
                     if (split)
-                        paths[pathIndex].Colour = (i == 0 ? Color4.Blue : Color4.Green);
+                        paths[pathIndex].Colour = (i == 0 ? basePath : offsetPath);
                     else
-                        paths[pathIndex].Colour = Color4.White;
+                        paths[pathIndex].Colour = joinedPath;
 
                     if (result.HasValue)
                     {

@@ -1,4 +1,4 @@
-using osuTK.Graphics;
+using osu.Framework.Graphics;
 
 namespace SpectralShift.Game
 {
@@ -11,21 +11,21 @@ namespace SpectralShift.Game
 
     public static class MaterialExtensions
     {
-        public static Color4 GetColor(this Material material)
+        public static Colour4 GetColor(this Material material)
         {
             switch (material)
             {
                 case Material.Diffuse:
-                    return Color4.SeaGreen;
+                    return Colour4.FromHex("#F4B183");
 
                 case Material.Reflective:
-                    return Color4.Aqua;
+                    return Colour4.FromHex("#F4B183");
 
                 case Material.Refractive:
-                    return Color4.Sienna;
+                    return Colour4.FromHex("#E3E3E3");
             }
 
-            return Color4.Magenta;
+            return Colour4.Magenta;
         }
     }
 }
