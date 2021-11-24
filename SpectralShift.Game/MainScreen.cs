@@ -67,9 +67,17 @@ namespace SpectralShift.Game
                 new Ray(camera.Position, camera.Direction),
                 new Ray(Vector2.Zero, Vector2.One),
             };
+            Material[] prevMaterials =
+            {
+                Material.Diffuse,
+                Material.Diffuse,
+            };
             bool[] raysActive = { true, false };
             bool split = false;
             int pathIndex = 0;
+
+            bool doJoin = false;
+            Vector2 joinPoint = Vector2.Zero;
 
             for (int depth = 0; depth < 10; depth++)
             {
@@ -93,12 +101,25 @@ namespace SpectralShift.Game
                     else
                         paths[pathIndex].Colour = joinedPath;
 
-                    if (result.HasValue)
+                    if (i == 1 && doJoin)
+                    {
+                        paths[pathIndex].AddVertex(joinPoint);
+                        doJoin = false;
+                        split = false;
+                    }
+                    else if (result.HasValue)
                     {
                         switch (result.Value.Material)
                         {
                             case Material.Diffuse:
                                 rays[i] = result.Value.ReflectedRay(rays[i].Direction);
+
+                                if (split && i == 0 && prevMaterials[0] == Material.Diffuse && prevMaterials[1] == Material.Diffuse)
+                                {
+                                    doJoin = true;
+                                    joinPoint = result.Value.Position;
+                                }
+
                                 break;
 
                             case Material.Reflective:
@@ -113,7 +134,7 @@ namespace SpectralShift.Game
                                     rays[0] = result.Value.RefractedRay(rays[0].Direction, 300);
                                     rays[1] = result.Value.RefractedRay(rays[0].Direction, 600);
                                     // Prevent second ray getting an extra bounce
-                                    i = 2;
+                                    i = 1;
                                 }
                                 else
                                 {
@@ -123,6 +144,7 @@ namespace SpectralShift.Game
                                 break;
                         }
 
+                        prevMaterials[i] = result.Value.Material;
                         paths[pathIndex].AddVertex(result.Value.Position);
                     }
                     else
