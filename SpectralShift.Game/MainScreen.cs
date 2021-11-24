@@ -37,7 +37,7 @@ namespace SpectralShift.Game
             {
                 new Box
                 {
-                    Colour = OsuColour.Gray4,
+                    Colour = OsuColour.Gray3,
                     RelativeSizeAxes = Axes.Both,
                 },
                 obstacleContainer = new ObstacleContainer(),
@@ -53,7 +53,7 @@ namespace SpectralShift.Game
 
         private readonly Colour4 basePath = Colour4.FromHex("#4472C4");
         private readonly Colour4 offsetPath = Colour4.FromHex("#FF0000");
-        private readonly Colour4 joinedPath = Colour4.FromHex("#993764");
+        private readonly Colour4 joinedPath = Colour4.White;
 
         protected override void Update()
         {
