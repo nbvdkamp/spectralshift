@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -112,12 +113,30 @@ namespace SpectralShift.Game
                         switch (result.Value.Material)
                         {
                             case Material.Diffuse:
+                                Ray oldValue = rays[i];
                                 rays[i] = result.Value.ReflectedRay(rays[i].Direction);
 
                                 if (split && i == 0 && prevMaterials[0] == Material.Diffuse && prevMaterials[1] == Material.Diffuse)
                                 {
                                     doJoin = true;
-                                    joinPoint = result.Value.Position;
+
+                                    Vector2? obstructionPosition = obstructed(rays[1].Origin, result.Value.Position);
+
+                                    if (obstructionPosition.HasValue)
+                                    {
+                                        joinPoint = obstructionPosition.Value;
+                                        oldValue.Direction = (joinPoint - oldValue.Origin).Normalized();
+                                        var result2 = findNearestIntersection(oldValue);
+
+                                        if (!result2.HasValue)
+                                            throw new Exception();
+
+                                        rays[0] = result2.Value.ReflectedRay(oldValue.Direction);
+                                    }
+                                    else
+                                    {
+                                        joinPoint = result.Value.Position;
+                                    }
                                 }
 
                                 break;
@@ -145,7 +164,7 @@ namespace SpectralShift.Game
                         }
 
                         prevMaterials[i] = result.Value.Material;
-                        paths[pathIndex].AddVertex(result.Value.Position);
+                        paths[pathIndex].AddVertex(rays[i].Origin);
                     }
                     else
                     {
@@ -156,6 +175,23 @@ namespace SpectralShift.Game
                     pathIndex++;
                 }
             }
+        }
+
+        private Vector2? obstructed(Vector2 start, Vector2 end)
+        {
+            Vector2 x = end - start;
+            float length = x.Length;
+            Ray ray = new Ray(start, x / length);
+            IntersectionResult? result = findNearestIntersection(ray);
+
+            if (!result.HasValue)
+                return null;
+
+            float otherLength = (result.Value.Position - start).Length;
+            if (length < otherLength)
+                return null;
+
+            return result.Value.Position;
         }
 
         private IntersectionResult? findNearestIntersection(Ray ray)

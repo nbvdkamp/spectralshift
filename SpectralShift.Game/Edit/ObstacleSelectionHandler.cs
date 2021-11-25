@@ -209,7 +209,6 @@ namespace SpectralShift.Game.Edit
                 var displayableMaterials = new[]
                 {
                     Material.Diffuse,
-                    Material.Reflective,
                     Material.Refractive
                 };
 
