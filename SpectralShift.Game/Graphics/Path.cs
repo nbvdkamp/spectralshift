@@ -2,7 +2,7 @@
 // To change its behaviour slightly (disabling lines 189,190)
 
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
-// See the LICENCE file in the repository root for full licence text.
+// See the LICENSE.OSU.txt file in the repository root for full licence text.
 
 using System;
 using osu.Framework.Graphics.Primitives;
