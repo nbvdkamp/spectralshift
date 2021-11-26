@@ -131,7 +131,10 @@ namespace SpectralShift.Game
                                         if (!result2.HasValue)
                                             throw new Exception();
 
-                                        rays[0] = result2.Value.ReflectedRay(oldValue.Direction);
+                                        if ((result2.Value.Position - oldValue.Origin).Length < (joinPoint - oldValue.Origin).Length)
+                                            doJoin = false;
+                                        else
+                                            rays[0] = result2.Value.ReflectedRay(oldValue.Direction);
                                     }
                                     else
                                     {
