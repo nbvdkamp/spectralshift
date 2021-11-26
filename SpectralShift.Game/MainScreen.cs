@@ -217,7 +217,7 @@ namespace SpectralShift.Game
         private void addPath()
         {
             Path path = new SmoothPath();
-            path.PathRadius = 3;
+            path.PathRadius = 2;
             paths.Add(path);
             rayContainer.Add(path);
         }
